@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
+<script class="jsbin" src="myfunc.js"></script>
+<meta charset=utf-8 />
+<link rel="stylesheet" href="style.css" />
+<title>Riot</title>
+<!--[if IE]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<style>
+  article, aside, figure, footer, header, hgroup, 
+  menu, nav, section { display: block; }
+</style>
+</head>
+
+
+
+<header>
+<h1> Paul Riot </h1>
+</header>
+
+<nav>
+<div id="menu">
+  <ul id="onglets">
+    <li><a href="index.html"> Accueil </a></li>
+    <li class="active"><a href="1D.html"> 1D </a></li>
+    <li><a href="2D.html"> 2D Lena </a></li>
+    <li><a href="2Dtexture.html"> 2D Texture </a></li>
+  </ul>
+</div>
+</nav>
+
+<body>
+
+
+    <select onchange="updated(this)">
+    <optgroup label="MAP-Sob">
+      <option value="MAPTV_lambda=500">MAP-Sob lambda=500</option>
+      <option value="MAPTV_lambda=1000">MAP-Sob lambda=1000</option>
+      <option value="MAPTV_lambda=2500">MAP-Sob lambda=2500</option>
+      <option value="MAPTV_lambda=5000">MAP-Sob lambda=5000</option>
+    <optgroup label="TV sans -1">
+      <option value="TVsans-1_lambda=5000">TV sans-1_lambda=5000</option>
+      <option value="TVsans-1_lambda=1000">TV sans-1_lambda=1000</option>
+      <option value="TVsans-1_lambda=100">TV sans-1_lambda=100</option>
+      <option value="TVsans-1_lambda=10">TV sans-1_lambda=10</option>
+    <optgroup label="TV avec -1">
+      <option value="TVavec-1_lambda=10000">TV avec-1_lambda=10000</option>
+      <option value="TVavec-1_lambda=1000">TV avec-1_lambda=1000</option>
+      <option value="TVavec-1_lambda=100">TV avec-1_lambda=100</option>
+      <option value="TVavec-1_lambda=10">TV avec-1_lambda=10</option>
+      <option value="TVavec-1_lambda=1">TV avec-1_lambda=1</option>
+      <option value="TVavec-1_lambda=0,5">TV avec-1_lambda=0,5</option>
+    <optgroup label="Sobolev sans -1">
+      <option value="sans-1_lambda=10000">Sobolev sans -1 lambda=10000</option>
+      <option value="sans-1_lambda=5000">Sobolev sans -1 lambda=5000</option>
+      <option value="sans-1_lambda=1000">Sobolev sans -1 lambda=1000</option>
+    <optgroup label="Sobolev avec -1">
+      <option value="avec-1_lambda=10000">Sobolev avec -1 lambda=10000</option>
+      <option value="avec-1_lambda=1000">Sobolev avec -1 lambda=1000</option>
+      <option selected="selected" value="avec-1_lambda=100">Sobolev avec -1 lambda=100</option>
+      <option value="avec-1_lambda=10">Sobolev avec -1 lambda=10</option>
+      <option value="avec-1_lambda=1">Sobolev avec -1 lambda=1</option>
+      <option value="avec-1_lambda=0,5">Sobolev avec -1 lambda=0,5</option>
+    <optgroup label="FFT (global) et Sobolev">
+      <option value="FFTSob_lambda=200">FFT et Sobolev lambda=200</option>
+      <option value="FFTSob_lambda=500">FFT et Sobolev lambda=500</option>
+      <option value="FFTSob_lambda=1000">FFT et Sobolev lambda=1000</option>
+      <option value="FFTSob_lambda=2000">FFT et Sobolev lambda=2000</option>
+    <optgroup label="Residu (global) avec -1 et Sobolev">
+      <option value="avec-1_global_lambda=100">Residu (global) avec -1 Sobolev lambda=100</option>
+      <option value="avec-1_global_lambda=200">Residu (global) avec -1 Sobolev lambda=200</option>
+      <option value="avec-1_global_lambda=500">Residu (global) avec -1 Sobolev lambda=500</option>
+      <option value="avec-1_global_lambda=1000">Residu (global) avec -1 Sobolev lambda=1000</option>
+      <option value="avec-1_global_lambda=5000">Residu (global) avec -1 Sobolev lambda=5000</option>
+      <option value="avec-1_global_lambda=10000">Residu (global) avec -1 Sobolev lambda=10000</option>
+    <optgroup label="autre">
+      <option value="sanscorr_avec-1_lambda=1">Sobolev avec -1 SANS Jcor lambda=1</option>
+      <option value="sansvar_avec-1_lambda=1">Sobolev avec -1 SANS Jvar lambda=1</option>
+      <option value="sansmean_avec-1_lambda=1">Sobolev avec -1 SANS Jmean lambda=1</option>
+      <option value="sanscorr_avec-1_lambda=1000">Sobolev avec -1 SANS Jcor lambda=1000</option>
+      <option value="sansvar_avec-1_lambda=1000">Sobolev avec -1 SANS Jvar lambda=1000</option>
+      <option value="sansmean_avec-1_lambda=1000">Sobolev avec -1 SANS Jmean lambda=1000</option>
+      <option value="sanscorr_avec-1_lambda=10000">Sobolev avec -1 SANS Jcor lambda=10000</option>
+      <option value="sansvar_avec-1_lambda=10000">Sobolev avec -1 SANS Jvar lambda=10000</option>
+      <option value="sansmean_avec-1_lambda=10000">Sobolev avec -1 SANS Jmean lambda=10000</option>
+    </select>
+
+    <br>
+    
+    <img id="Im1" src="Images/avec-1_lambda=1001.png" width="18%" />
+    <img id="Im2" src="Images/avec-1_lambda=1002.png" width="38%" />
+    <img id="Im3" src="Images/avec-1_lambda=1003.png" width="38%" />
+    
+    <br>
+    <br>
+    
+    
+    
+    <select onchange="updated2(this)">
+    <optgroup label="MAP-Sob">
+      <option value="MAPTV_lambda=500">MAP-Sob lambda=500</option>
+      <option value="MAPTV_lambda=1000">MAP-Sob lambda=1000</option>
+      <option value="MAPTV_lambda=2500">MAP-Sob lambda=2500</option>
+      <option value="MAPTV_lambda=5000">MAP-Sob lambda=5000</option>
+    <optgroup label="TV sans -1">
+      <option value="TVsans-1_lambda=5000">TV sans-1_lambda=5000</option>
+      <option value="TVsans-1_lambda=1000">TV sans-1_lambda=1000</option>
+      <option value="TVsans-1_lambda=100">TV sans-1_lambda=100</option>
+      <option value="TVsans-1_lambda=10">TV sans-1_lambda=10</option>
+    <optgroup label="TV avec -1">
+      <option value="TVavec-1_lambda=10000">TV avec-1_lambda=10000</option>
+      <option value="TVavec-1_lambda=1000">TV avec-1_lambda=1000</option>
+      <option value="TVavec-1_lambda=100">TV avec-1_lambda=100</option>
+      <option value="TVavec-1_lambda=10">TV avec-1_lambda=10</option>
+      <option value="TVavec-1_lambda=1">TV avec-1_lambda=1</option>
+      <option value="TVavec-1_lambda=0,5">TV avec-1_lambda=0,5</option>
+    <optgroup label="Sobolev sans -1">
+      <option value="sans-1_lambda=10000">Sobolev sans -1 lambda=10000</option>
+      <option value="sans-1_lambda=5000">Sobolev sans -1 lambda=5000</option>
+      <option value="sans-1_lambda=1000">Sobolev sans -1 lambda=1000</option>
+    <optgroup label="Sobolev avec -1">
+      <option value="avec-1_lambda=10000">Sobolev avec -1 lambda=10000</option>
+      <option value="avec-1_lambda=1000">Sobolev avec -1 lambda=1000</option>
+      <option selected="selected" value="avec-1_lambda=100">Sobolev avec -1 lambda=100</option>
+      <option value="avec-1_lambda=10">Sobolev avec -1 lambda=10</option>
+      <option value="avec-1_lambda=1">Sobolev avec -1 lambda=1</option>
+      <option value="avec-1_lambda=0,5">Sobolev avec -1 lambda=0,5</option>
+    <optgroup label="FFT (global) et Sobolev">
+      <option value="FFTSob_lambda=200">FFT et Sobolev lambda=200</option>
+      <option value="FFTSob_lambda=500">FFT et Sobolev lambda=500</option>
+      <option value="FFTSob_lambda=1000">FFT et Sobolev lambda=1000</option>
+      <option value="FFTSob_lambda=2000">FFT et Sobolev lambda=2000</option>
+    <optgroup label="Residu (global) avec -1 et Sobolev">
+      <option value="avec-1_global_lambda=100">Residu (global) avec -1 Sobolev lambda=100</option>
+      <option value="avec-1_global_lambda=200">Residu (global) avec -1 Sobolev lambda=200</option>
+      <option value="avec-1_global_lambda=500">Residu (global) avec -1 Sobolev lambda=500</option>
+      <option value="avec-1_global_lambda=1000">Residu (global) avec -1 Sobolev lambda=1000</option>
+      <option value="avec-1_global_lambda=5000">Residu (global) avec -1 Sobolev lambda=5000</option>
+      <option value="avec-1_global_lambda=10000">Residu (global) avec -1 Sobolev lambda=10000</option>
+    <optgroup label="autre">
+      <option value="sanscorr_avec-1_lambda=1">Sobolev avec -1 SANS Jcor lambda=1</option>
+      <option value="sansvar_avec-1_lambda=1">Sobolev avec -1 SANS Jvar lambda=1</option>
+      <option value="sansmean_avec-1_lambda=1">Sobolev avec -1 SANS Jmean lambda=1</option>
+      <option value="sanscorr_avec-1_lambda=1000">Sobolev avec -1 SANS Jcor lambda=1000</option>
+      <option value="sansvar_avec-1_lambda=1000">Sobolev avec -1 SANS Jvar lambda=1000</option>
+      <option value="sansmean_avec-1_lambda=1000">Sobolev avec -1 SANS Jmean lambda=1000</option>
+      <option value="sanscorr_avec-1_lambda=10000">Sobolev avec -1 SANS Jcor lambda=10000</option>
+      <option value="sansvar_avec-1_lambda=10000">Sobolev avec -1 SANS Jvar lambda=10000</option>
+      <option value="sansmean_avec-1_lambda=10000">Sobolev avec -1 SANS Jmean lambda=10000</option>
+    </select>
+    <br>
+    
+    <img id="Im4" src="Images/avec-1_lambda=1001.png" width="18%" />
+    <img id="Im5" src="Images/avec-1_lambda=1002.png" width="38%" />
+    <img id="Im6" src="Images/avec-1_lambda=1003.png" width="38%" />
+    
+    
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
+<script class="jsbin" src="myfunc.js"></script>
+<meta charset=utf-8 />
+<link rel="stylesheet" href="style.css" />
+<title>Riot</title>
+<!--[if IE]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+</head>
+
+<header>
+<h1> Paul Riot </h1>
+</header>
+
+<nav>
+<div id="menu">
+  <ul id="onglets">
+    <li><a href="index.html"> Accueil </a></li>
+    <li><a href="1D.html"> 1D </a></li>
+    <li class="active"><a href="2D.html"> 2D Lena </a></li>
+    <li><a href="2Dtexture.html"> 2D Texture </a></li>
+  </ul>
+</div>
+</nav>
+
+<body>
+The description of our different models can be found <a href="./partage/ResumeModels.pdf"> HERE </a>.
+<br>
+<br>
+Here are some preliminary results of our method on the lena image. For the local methods, we set a size of patches s=10*10 with an overlap of 2 (we take half of the patches), unless it is particularly said otherwise. The optimization is done on 20 iterations for computational time purposes.
+<br>
+<br>
+The best results are obtained for the Residu-1-TV method with lambda=60. But the improvements from the MAP-TV method is not significant yet. Indeed, the SNR is only slightly higher and the Residu-1-TV results present some disturbing artifacts. However, we can notice that the method successfully retrieves some textures.
+<br>
+Comparing the global and local methods, the performances improve drastically. The global methods can't retrieve the texture and let through a lot of noise. 
+<br>
+<br>
+<aside id="SecIm1">
+<figure>
+	<img  src="Images/2D/lenaFull.png"  />
+    <figcaption>Noise-free Image</figcaption>
+</figure>
+</aside>
+<aside id="SecIm2">
+<figure>
+	<img  src="Images/2D/lenaFull_sig=0,1.png"  />
+    <figcaption>Noisy Image</figcaption>
+</figure>
+</aside>
+<br>
+Chose a model and its parameters to see the denoised result (1/2 means we use half of the patches) :
+<br>
+<br>
+<section>
+	<aside id="SecIm1">
+		<select onchange="updated3(this)">
+		<optgroup label="MAP-TV">
+		  <option selected="selected" value="MAPTV_lambda=1">MAP-TV lambda=1</option>
+		  <option value="MAPTV_lambda=5">MAP-TV lambda=5</option>
+		  <option value="MAPTV_lambda=10">MAP-TV lambda=10</option>
+		  <option value="MAPTV_lambda=20">MAP-TV lambda=20</option>
+		  <option value="MAPTV_lambda=40">MAP-TV lambda=40</option>
+		  <option value="MAPTV_lambda=60">MAP-TV lambda=60</option>
+		  <option value="MAPTV_lambda=80">MAP-TV lambda=80</option>
+		  <option value="MAPTV_lambda=100">MAP-TV lambda=100</option>
+		  <option value="MAPTV_lambda=140">MAP-TV lambda=140</option>
+		<optgroup label="Residu-TV">
+		  <option value="Residu-TV_lambda=10">Residu-TV lambda=10</option>
+		  <option value="Residu-TV_lambda=50">Residu-TV lambda=50</option>
+		  <option value="Residu-TV_lambda=100">Residu-TV lambda=100</option>
+		  <option value="Residu-TV_lambda=200">Residu-TV lambda=200</option>
+		  <option value="Residu-TV_lambda=400">Residu-TV lambda=400</option>
+		  <option value="Residu-TV_lambda=600">Residu-TV lambda=600</option>
+		  <option value="Residu-TV_lambda=800">Residu-TV lambda=800</option>
+		  <option value="Residu-TV_lambda=1000">Residu-TV lambda=1000</option>
+		  <option value="Residu-TV_lambda=1400">Residu-TV lambda=1400</option>
+		<optgroup label="Residu-1-TV">
+		  <option value="Residu-1-TV_lambda=10">Residu-1-TV lambda=10</option>
+		  <option value="Residu-1-TV_lambda=50">Residu-1-TV lambda=50</option>
+		  <option value="Residu-1-TV_lambda=100">Residu-1-TV lambda=100</option>
+		  <option value="Residu-1-TV_lambda=200">Residu-1-TV lambda=200</option>
+		  <option value="Residu-1-TV_lambda=400">Residu-1-TV lambda=400</option>
+		  <option value="Residu-1-TV_lambda=600">Residu-1-TV lambda=600</option>
+		  <option value="Residu-1-TV_lambda=800">Residu-1-TV lambda=800</option>
+		  <option value="Residu-1-TV_lambda=1000">Residu-1-TV lambda=1000</option>
+		  <option value="Residu-1-TV_lambda=1400">Residu-1-TV lambda=1400</option>
+		<optgroup label="ResiduFFT-TV">
+		  <option value="ResiduFFT-TV_lambda=300">ResiduFFT-TV lambda=300</option>
+		  <option value="ResiduFFT-TV_lambda=1500">ResiduFFT-TV lambda=1500</option>
+		  <option value="ResiduFFT-TV_lambda=3000">ResiduFFT-TV lambda=3000</option>
+		  <option value="ResiduFFT-TV_lambda=6000">ResiduFFT-TV lambda=6000</option>
+		  <option value="ResiduFFT-TV_lambda=12000">ResiduFFT-TV lambda=12000</option>
+		  <option value="ResiduFFT-TV_lambda=18000">ResiduFFT-TV lambda=18000</option>
+		  <option value="ResiduFFT-TV_lambda=24000">ResiduFFT-TV lambda=24000</option>
+		  <option value="ResiduFFT-TV_lambda=30000">ResiduFFT-TV lambda=30000</option>
+		  <option value="ResiduFFT-TV_lambda=42000">ResiduFFT-TV lambda=42000</option>
+		<optgroup label="Residu-Global-TV">
+		  <option value="Residu-Global-TV_lambda=500">Residu-Global-TV lambda=500</option>
+		  <option value="Residu-Global-TV_lambda=2500">Residu-Global-TV lambda=2500</option>
+		  <option value="Residu-Global-TV_lambda=5000">Residu-Global-TV lambda=5000</option>
+		  <option value="Residu-Global-TV_lambda=10000">Residu-Global-TV lambda=10000</option>
+		  <option value="Residu-Global-TV_lambda=20000">Residu-Global-TV lambda=20000</option>
+		  <option value="Residu-Global-TV_lambda=30000">Residu-Global-TV lambda=30000</option>
+		  <option value="Residu-Global-TV_lambda=40000">Residu-Global-TV lambda=40000</option>
+		  <option value="Residu-Global-TV_lambda=50000">Residu-Global-TV lambda=50000</option>
+		  <option value="Residu-Global-TV_lambda=70000">Residu-Global-TV lambda=70000</option>
+		<optgroup label="Residu-1-Global-TV">
+		  <option value="Residu-1-Global-TV_lambda=500">Residu-1-Global-TV lambda=500</option>
+		  <option value="Residu-1-Global-TV_lambda=2500">Residu-1-Global-TV lambda=2500</option>
+		  <option value="Residu-1-Global-TV_lambda=5000">Residu-1-Global-TV lambda=5000</option>
+		  <option value="Residu-1-Global-TV_lambda=10000">Residu-1-Global-TV lambda=10000</option>
+		  <option value="Residu-1-Global-TV_lambda=20000">Residu-1-Global-TV lambda=20000</option>
+		  <option value="Residu-1-Global-TV_lambda=30000">Residu-1-Global-TV lambda=30000</option>
+		  <option value="Residu-1-Global-TV_lambda=40000">Residu-1-Global-TV lambda=40000</option>
+		  <option value="Residu-1-Global-TV_lambda=50000">Residu-1-Global-TV lambda=50000</option>
+		  <option value="Residu-1-Global-TV_lambda=70000">Residu-1-Global-TV lambda=70000</option>
+		<optgroup label="Residu-TV Expe Patchs lambda=200">
+		  <option value="Residu-TV-ExpePatchs-s=48-overlap=48">Residu-TV s=48 overlap=0%</option>
+		  <option value="Residu-TV-ExpePatchs-s=48-overlap=24">Residu-TV s=48 overlap=50%</option>
+		  <option value="Residu-TV-ExpePatchs-s=48-overlap=2">Residu-TV s=48 1/2</option>
+		  <option value="Residu-TV-ExpePatchs-s=24-overlap=24">Residu-TV s=24 overlap=0%</option>
+		  <option value="Residu-TV-ExpePatchs-s=24-overlap=12">Residu-TV s=24 overlap=50%</option>
+		  <option value="Residu-TV-ExpePatchs-s=24-overlap=1">Residu-TV s=24 overlap=100%</option>
+		  <option value="Residu-TV-ExpePatchs-s=12-overlap=12">Residu-TV s=12 overlap=0%</option>
+		  <option value="Residu-TV-ExpePatchs-s=12-overlap=6">Residu-TV s=12 overlap=50%</option>
+		  <option value="Residu-TV-ExpePatchs-s=12-overlap=1">Residu-TV s=12 overlap=100%</option>
+		  <option value="Residu-TV-ExpePatchs-s=6-overlap=6">Residu-TV s=6 overlap=0%</option>
+		  <option value="Residu-TV-ExpePatchs-s=6-overlap=3">Residu-TV s=6 overlap=50%</option>
+		  <option value="Residu-TV-ExpePatchs-s=6-overlap=1">Residu-TV s=6 overlap=100%</option>
+		  <option value="Residu-TV-ExpePatchs-s=3-overlap=3">Residu-TV s=3 overlap=0%</option>
+		  <option value="Residu-TV-ExpePatchs-s=3-overlap=1">Residu-TV s=3 overlap=100%</option>
+		<optgroup label="Residu-1-TV Expe Patchs lambda=60">
+		  <option value="Residu-1-TV-ExpePatchs-s=30-overlap=30">Residu-1-TV s=30 overlap=0%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=30-overlap=15">Residu-1-TV s=30 overlap=50%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=30-overlap=2">Residu-1-TV s=30 1/2</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=25-overlap=25">Residu-1-TV s=25 overlap=0%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=25-overlap=12">Residu-1-TV s=25 overlap=50%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=25-overlap=2">Residu-1-TV s=25 1/2</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=20-overlap=20">Residu-1-TV s=20 overlap=0%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=20-overlap=10">Residu-1-TV s=20 overlap=50%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=20-overlap=2">Residu-1-TV s=20 1/2</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=15-overlap=15">Residu-1-TV s=15 overlap=0%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=15-overlap=7">Residu-1-TV s=15 overlap=50%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=15-overlap=2">Residu-1-TV s=15 1/2</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=12-overlap=12">Residu-1-TV s=12 overlap=0%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=12-overlap=6">Residu-1-TV s=12 overlap=50%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=12-overlap=2">Residu-1-TV s=12 1/2</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=10-overlap=10">Residu-1-TV s=10 overlap=0%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=10-overlap=5">Residu-1-TV s=10 overlap=50%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=10-overlap=2">Residu-1-TV s=10 1/2</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=8-overlap=8">Residu-1-TV s=8 overlap=0%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=8-overlap=4">Residu-1-TV s=8 overlap=50%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=8-overlap=2">Residu-1-TV s=8 1/2</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=6-overlap=6">Residu-1-TV s=6 overlap=0%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=6-overlap=3">Residu-1-TV s=6 overlap=50%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=6-overlap=2">Residu-1-TV s=6 1/2</option>
+		<optgroup label="Residu-1-TV BEST SNR=22.16dB lambda=60 s=15">
+		  <option value="Residu-1-TV-BestSNR-s=15-overlap=1">Residu-1-TV s=15 overlap=100%</option>
+		<optgroup label="Residu-1-TV Without Jmean lambda=60 s=15">
+		  <option value="Residu-1-TV-withoutJmean-s=15-overlap=2">Residu-1-TV s=15 1/2</option>
+		<optgroup label="Residu-1-M-TV overlap=2">
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=30">Residu-1-M-TV s=15 lambda=30</option>
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=50">Residu-1-M-TV s=15 lambda=50</option>
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=60">Residu-1-M-TV s=15 lambda=60</option>
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=70">Residu-1-M-TV s=15 lambda=70</option>
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=90">Residu-1-M-TV s=15 lambda=90</option>
+		  <option value="Residu-1-M-TV-s=10-overlap=2-lambda=60">Residu-1-M-TV s=10 lambda=60</option>
+		  <option value="Residu-1-M-TV-s=13-overlap=2-lambda=60">Residu-1-M-TV s=13 lambda=60</option>
+		  <option value="Residu-1-M-TV-s=17-overlap=2-lambda=60">Residu-1-M-TV s=17 lambda=60</option>
+		  <option value="Residu-1-M-TV-s=20-overlap=2-lambda=60">Residu-1-M-TV s=20 lambda=60</option>
+		<optgroup label="Residu-1-M-TV-s=15-overlap=2-lambda=60 s-mean Expe">
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=60-sMean=40">Residu-1-M-TV sMean=40</option>
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=60-sMean=30">Residu-1-M-TV sMean=30</option>
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=60-sMean=10">Residu-1-M-TV sMean=10</option>
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=60-sMean=5">Residu-1-M-TV sMean=5</option>
+		<optgroup label="Residu-1-M-TV-s=15-overlap=2-lambda=60 beta(L2) Expe">
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=60-beta=1,5">Residu-1-M-TV beta=1,5</option>
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=60-beta=1,2">Residu-1-M-TV beta=1,2</option>
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=60-beta=0,8">Residu-1-M-TV beta=0,8</option>
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=60-beta=0,5">Residu-1-M-TV beta=0,5</option>
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=60-beta=0,1">Residu-1-M-TV beta=0,1</option>
+		<optgroup label="Residu-1-TV s=15 overlap=2 lambda=60 Expe Avec/Sans Jcorr">
+		  <option value="Residu-1-TV-SANSJcorr-s=15-overlap=2-lambda=60">Residu-1-TV SANS Jcorr</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=15-overlap=2">Residu-1-TV AVEC Jcorr</option>
+		<optgroup label="Residu-1-NLM Expe Patchs h=1.8 W=25">
+		  <option value="Residu-1-NLM-h=1,8-W=25-lambda=0.000050">Residu-1-NLM Expe Patchs h=1.8 W=25 lambda=5e-5</option>
+		  <option value="Residu-1-NLM-h=1,8-W=25-lambda=0.000100">Residu-1-NLM Expe Patchs h=1.8 W=25 lambda=1e-4</option>
+		  <option value="Residu-1-NLM-h=1,8-W=25-lambda=0.000300">Residu-1-NLM Expe Patchs h=1.8 W=25 lambda=3e-4</option>
+		  <option value="Residu-1-NLM-h=1,8-W=25-lambda=0.000500">Residu-1-NLM Expe Patchs h=1.8 W=25 lambda=5e-4</option>
+		  <option value="Residu-1-NLM-h=1,8-W=25-lambda=0.000700">Residu-1-NLM Expe Patchs h=1.8 W=25 lambda=7e-4</option>
+		  <option value="Residu-1-NLM-h=1,8-W=25-lambda=0.001000">Residu-1-NLM Expe Patchs h=1.8 W=25 lambda=1e-3</option>
+		  <option value="Residu-1-NLM-h=1,8-W=25-lambda=0.002000">Residu-1-NLM Expe Patchs h=1.8 W=25 lambda=2e-3</option>
+		  <option value="Residu-1-NLM-h=1,8-W=25-lambda=0.005000">Residu-1-NLM Expe Patchs h=1.8 W=25 lambda=5e-3</option>
+		<optgroup label="Residu-1-NLM Expe Patchs h=1.5 W=25">
+		  <option value="Residu-1-NLM-h=1,5-W=25-lambda=0.000100">Residu-1-NLM Expe Patchs h=1.5 W=25 lambda=1e-4</option>
+		  <option value="Residu-1-NLM-h=1,5-W=25-lambda=0.000300">Residu-1-NLM Expe Patchs h=1.5 W=25 lambda=3e-4</option>
+		  <option value="Residu-1-NLM-h=1,5-W=25-lambda=0.000700">Residu-1-NLM Expe Patchs h=1.5 W=25 lambda=7e-4</option>
+		  <option value="Residu-1-NLM-h=1,5-W=25-lambda=0.001000">Residu-1-NLM Expe Patchs h=1.5 W=25 lambda=1e-3</option>
+		  <option value="Residu-1-NLM-h=1,5-W=25-lambda=0.002000">Residu-1-NLM Expe Patchs h=1.5 W=25 lambda=2e-3</option>
+		<optgroup label="Residu-1-NLM Expe Patchs h=2.1 W=25">
+		  <option value="Residu-1-NLM-h=2,1-W=25-lambda=0.000100">Residu-1-NLM Expe Patchs h=2.1 W=25 lambda=1e-4</option>
+		  <option value="Residu-1-NLM-h=2,1-W=25-lambda=0.000300">Residu-1-NLM Expe Patchs h=2.1 W=25 lambda=3e-4</option>
+		  <option value="Residu-1-NLM-h=2,1-W=25-lambda=0.000700">Residu-1-NLM Expe Patchs h=2.1 W=25 lambda=7e-4</option>
+		  <option value="Residu-1-NLM-h=2,1-W=25-lambda=0.001000">Residu-1-NLM Expe Patchs h=2.1 W=25 lambda=1e-3</option>
+		  <option value="Residu-1-NLM-h=2,1-W=25-lambda=0.002000">Residu-1-NLM Expe Patchs h=2.1 W=25 lambda=2e-3</option>
+		<optgroup label="Residu-1-NLM Expe Patchs h=2.1 W=25">
+		  <option value="Residu-1-NLM-h=2-W=31-lambda=0.000100">Residu-1-NLM Expe Patchs h=2 W=31 lambda=1e-4</option>
+		  <option value="Residu-1-NLM-h=2-W=31-lambda=0.000300">Residu-1-NLM Expe Patchs h=2 W=31 lambda=3e-4</option>
+		  <option value="Residu-1-NLM-h=2-W=31-lambda=0.000700">Residu-1-NLM Expe Patchs h=2 W=31 lambda=7e-4</option>
+		  <option value="Residu-1-NLM-h=2-W=31-lambda=0.001000">Residu-1-NLM Expe Patchs h=2 W=31 lambda=1e-3</option>
+		  <option value="Residu-1-NLM-h=2-W=31-lambda=0.002000">Residu-1-NLM Expe Patchs h=2 W=31 lambda=2e-3</option>
+
+
+		</select>
+		<br>
+		<br>
+		
+		
+		<figure>
+			<img id="ImDeb1" src="Images/2D/MAPTV_lambda=1.png"  />
+		</figure>
+	</aside>
+	<aside id="SecIm2">
+		
+		<select onchange="updated4(this)">
+		<optgroup label="MAP-TV">
+		  <option selected="selected" value="MAPTV_lambda=1">MAP-TV lambda=1</option>
+		  <option value="MAPTV_lambda=5">MAP-TV lambda=5</option>
+		  <option value="MAPTV_lambda=10">MAP-TV lambda=10</option>
+		  <option value="MAPTV_lambda=20">MAP-TV lambda=20</option>
+		  <option value="MAPTV_lambda=40">MAP-TV lambda=40</option>
+		  <option value="MAPTV_lambda=60">MAP-TV lambda=60</option>
+		  <option value="MAPTV_lambda=80">MAP-TV lambda=80</option>
+		  <option value="MAPTV_lambda=100">MAP-TV lambda=100</option>
+		  <option value="MAPTV_lambda=140">MAP-TV lambda=140</option>
+		<optgroup label="Residu-TV">
+		  <option value="Residu-TV_lambda=10">Residu-TV lambda=10</option>
+		  <option value="Residu-TV_lambda=50">Residu-TV lambda=50</option>
+		  <option value="Residu-TV_lambda=100">Residu-TV lambda=100</option>
+		  <option value="Residu-TV_lambda=200">Residu-TV lambda=200</option>
+		  <option value="Residu-TV_lambda=400">Residu-TV lambda=400</option>
+		  <option value="Residu-TV_lambda=600">Residu-TV lambda=600</option>
+		  <option value="Residu-TV_lambda=800">Residu-TV lambda=800</option>
+		  <option value="Residu-TV_lambda=1000">Residu-TV lambda=1000</option>
+		  <option value="Residu-TV_lambda=1400">Residu-TV lambda=1400</option>
+		<optgroup label="Residu-1-TV">
+		  <option value="Residu-1-TV_lambda=10">Residu-1-TV lambda=10</option>
+		  <option value="Residu-1-TV_lambda=50">Residu-1-TV lambda=50</option>
+		  <option value="Residu-1-TV_lambda=100">Residu-1-TV lambda=100</option>
+		  <option value="Residu-1-TV_lambda=200">Residu-1-TV lambda=200</option>
+		  <option value="Residu-1-TV_lambda=400">Residu-1-TV lambda=400</option>
+		  <option value="Residu-1-TV_lambda=600">Residu-1-TV lambda=600</option>
+		  <option value="Residu-1-TV_lambda=800">Residu-1-TV lambda=800</option>
+		  <option value="Residu-1-TV_lambda=1000">Residu-1-TV lambda=1000</option>
+		  <option value="Residu-1-TV_lambda=1400">Residu-1-TV lambda=1400</option>
+		<optgroup label="ResiduFFT-TV">
+		  <option value="ResiduFFT-TV_lambda=300">ResiduFFT-TV lambda=300</option>
+		  <option value="ResiduFFT-TV_lambda=1500">ResiduFFT-TV lambda=1500</option>
+		  <option value="ResiduFFT-TV_lambda=3000">ResiduFFT-TV lambda=3000</option>
+		  <option value="ResiduFFT-TV_lambda=6000">ResiduFFT-TV lambda=6000</option>
+		  <option value="ResiduFFT-TV_lambda=12000">ResiduFFT-TV lambda=12000</option>
+		  <option value="ResiduFFT-TV_lambda=18000">ResiduFFT-TV lambda=18000</option>
+		  <option value="ResiduFFT-TV_lambda=24000">ResiduFFT-TV lambda=24000</option>
+		  <option value="ResiduFFT-TV_lambda=30000">ResiduFFT-TV lambda=30000</option>
+		  <option value="ResiduFFT-TV_lambda=42000">ResiduFFT-TV lambda=42000</option>
+		<optgroup label="Residu-Global-TV">
+		  <option value="Residu-Global-TV_lambda=500">Residu-Global-TV lambda=500</option>
+		  <option value="Residu-Global-TV_lambda=2500">Residu-Global-TV lambda=2500</option>
+		  <option value="Residu-Global-TV_lambda=5000">Residu-Global-TV lambda=5000</option>
+		  <option value="Residu-Global-TV_lambda=10000">Residu-Global-TV lambda=10000</option>
+		  <option value="Residu-Global-TV_lambda=20000">Residu-Global-TV lambda=20000</option>
+		  <option value="Residu-Global-TV_lambda=30000">Residu-Global-TV lambda=30000</option>
+		  <option value="Residu-Global-TV_lambda=40000">Residu-Global-TV lambda=40000</option>
+		  <option value="Residu-Global-TV_lambda=50000">Residu-Global-TV lambda=50000</option>
+		  <option value="Residu-Global-TV_lambda=70000">Residu-Global-TV lambda=70000</option>
+		<optgroup label="Residu-1-Global-TV">
+		  <option value="Residu-1-Global-TV_lambda=500">Residu-1-Global-TV lambda=500</option>
+		  <option value="Residu-1-Global-TV_lambda=2500">Residu-1-Global-TV lambda=2500</option>
+		  <option value="Residu-1-Global-TV_lambda=5000">Residu-1-Global-TV lambda=5000</option>
+		  <option value="Residu-1-Global-TV_lambda=10000">Residu-1-Global-TV lambda=10000</option>
+		  <option value="Residu-1-Global-TV_lambda=20000">Residu-1-Global-TV lambda=20000</option>
+		  <option value="Residu-1-Global-TV_lambda=30000">Residu-1-Global-TV lambda=30000</option>
+		  <option value="Residu-1-Global-TV_lambda=40000">Residu-1-Global-TV lambda=40000</option>
+		  <option value="Residu-1-Global-TV_lambda=50000">Residu-1-Global-TV lambda=50000</option>
+		  <option value="Residu-1-Global-TV_lambda=70000">Residu-1-Global-TV lambda=70000</option>
+		<optgroup label="Residu-TV Expe Patchs lambda=200">
+		  <option value="Residu-TV-ExpePatchs-s=48-overlap=48">Residu-TV s=48 overlap=0%</option>
+		  <option value="Residu-TV-ExpePatchs-s=48-overlap=24">Residu-TV s=48 overlap=50%</option>
+		  <option value="Residu-TV-ExpePatchs-s=48-overlap=2">Residu-TV s=48 overlap=98%</option>
+		  <option value="Residu-TV-ExpePatchs-s=24-overlap=24">Residu-TV s=24 overlap=0%</option>
+		  <option value="Residu-TV-ExpePatchs-s=24-overlap=12">Residu-TV s=24 overlap=50%</option>
+		  <option value="Residu-TV-ExpePatchs-s=24-overlap=1">Residu-TV s=24 overlap=100%</option>
+		  <option value="Residu-TV-ExpePatchs-s=12-overlap=12">Residu-TV s=12 overlap=0%</option>
+		  <option value="Residu-TV-ExpePatchs-s=12-overlap=6">Residu-TV s=12 overlap=50%</option>
+		  <option value="Residu-TV-ExpePatchs-s=12-overlap=1">Residu-TV s=12 overlap=100%</option>
+		  <option value="Residu-TV-ExpePatchs-s=6-overlap=6">Residu-TV s=6 overlap=0%</option>
+		  <option value="Residu-TV-ExpePatchs-s=6-overlap=3">Residu-TV s=6 overlap=50%</option>
+		  <option value="Residu-TV-ExpePatchs-s=6-overlap=1">Residu-TV s=6 overlap=100%</option>
+		  <option value="Residu-TV-ExpePatchs-s=3-overlap=3">Residu-TV s=3 overlap=0%</option>
+		  <option value="Residu-TV-ExpePatchs-s=3-overlap=1">Residu-TV s=3 overlap=100%</option>
+		<optgroup label="Residu-1-TV Expe Patchs lambda=60">
+		  <option value="Residu-1-TV-ExpePatchs-s=30-overlap=30">Residu-1-TV s=30 overlap=0%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=30-overlap=15">Residu-1-TV s=30 overlap=50%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=30-overlap=2">Residu-1-TV s=30 1/2</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=25-overlap=25">Residu-1-TV s=25 overlap=0%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=25-overlap=12">Residu-1-TV s=25 overlap=50%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=25-overlap=2">Residu-1-TV s=25 1/2</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=20-overlap=20">Residu-1-TV s=20 overlap=0%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=20-overlap=10">Residu-1-TV s=20 overlap=50%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=20-overlap=2">Residu-1-TV s=20 1/2</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=15-overlap=15">Residu-1-TV s=15 overlap=0%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=15-overlap=7">Residu-1-TV s=15 overlap=50%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=15-overlap=2">Residu-1-TV s=15 1/2</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=12-overlap=12">Residu-1-TV s=12 overlap=0%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=12-overlap=6">Residu-1-TV s=12 overlap=50%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=12-overlap=2">Residu-1-TV s=12 1/2</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=10-overlap=10">Residu-1-TV s=10 overlap=0%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=10-overlap=5">Residu-1-TV s=10 overlap=50%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=10-overlap=2">Residu-1-TV s=10 1/2</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=8-overlap=8">Residu-1-TV s=8 overlap=0%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=8-overlap=4">Residu-1-TV s=8 overlap=50%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=8-overlap=2">Residu-1-TV s=8 1/2</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=6-overlap=6">Residu-1-TV s=6 overlap=0%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=6-overlap=3">Residu-1-TV s=6 overlap=50%</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=6-overlap=2">Residu-1-TV s=6 1/2</option>
+		<optgroup label="Residu-1-TV BEST SNR=22.16dB lambda=60 s=15">
+		  <option value="Residu-1-TV-BestSNR-s=15-overlap=1">Residu-1-TV s=15 overlap=100%</option>
+		<optgroup label="Residu-1-TV Without Jmean lambda=60 s=15">
+		  <option value="Residu-1-TV-withoutJmean-s=15-overlap=2">Residu-1-TV s=15 1/2</option>
+		<optgroup label="Residu-1-M-TV overlap=2">
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=30">Residu-1-M-TV s=15 lambda=30</option>
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=50">Residu-1-M-TV s=15 lambda=50</option>
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=60">Residu-1-M-TV s=15 lambda=60</option>
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=70">Residu-1-M-TV s=15 lambda=70</option>
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=90">Residu-1-M-TV s=15 lambda=90</option>
+		  <option value="Residu-1-M-TV-s=10-overlap=2-lambda=60">Residu-1-M-TV s=10 lambda=60</option>
+		  <option value="Residu-1-M-TV-s=13-overlap=2-lambda=60">Residu-1-M-TV s=13 lambda=60</option>
+		  <option value="Residu-1-M-TV-s=17-overlap=2-lambda=60">Residu-1-M-TV s=17 lambda=60</option>
+		  <option value="Residu-1-M-TV-s=20-overlap=2-lambda=60">Residu-1-M-TV s=20 lambda=60</option>
+		<optgroup label="Residu-1-M-TV-s=15-overlap=2-lambda=60 s-mean Expe">
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=60-sMean=40">Residu-1-M-TV sMean=40</option>
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=60-sMean=30">Residu-1-M-TV sMean=30</option>
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=60-sMean=10">Residu-1-M-TV sMean=10</option>
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=60-sMean=5">Residu-1-M-TV sMean=5</option>
+		<optgroup label="Residu-1-M-TV-s=15-overlap=2-lambda=60 beta(L2) Expe">
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=60-beta=1,5">Residu-1-M-TV beta=1,5</option>
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=60-beta=1,2">Residu-1-M-TV beta=1,2</option>
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=60-beta=0,8">Residu-1-M-TV beta=0,8</option>
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=60-beta=0,5">Residu-1-M-TV beta=0,5</option>
+		  <option value="Residu-1-M-TV-s=15-overlap=2-lambda=60-beta=0,1">Residu-1-M-TV beta=0,1</option>
+		<optgroup label="Residu-1-TV s=15 overlap=2 lambda=60 Expe Avec/Sans Jcorr">
+		  <option value="Residu-1-TV-SANSJcorr-s=15-overlap=2-lambda=60">Residu-1-TV SANS Jcorr</option>
+		  <option value="Residu-1-TV-ExpePatchs-s=15-overlap=2">Residu-1-TV AVEC Jcorr</option>
+		<optgroup label="Residu-1-NLM Expe Patchs h=1.8 W=25">
+		  <option value="Residu-1-NLM-h=1,8-W=25-lambda=0.000050">Residu-1-NLM Expe Patchs h=1.8 W=25 lambda=5e-5</option>
+		  <option value="Residu-1-NLM-h=1,8-W=25-lambda=0.000100">Residu-1-NLM Expe Patchs h=1.8 W=25 lambda=1e-4</option>
+		  <option value="Residu-1-NLM-h=1,8-W=25-lambda=0.000300">Residu-1-NLM Expe Patchs h=1.8 W=25 lambda=3e-4</option>
+		  <option value="Residu-1-NLM-h=1,8-W=25-lambda=0.000500">Residu-1-NLM Expe Patchs h=1.8 W=25 lambda=5e-4</option>
+		  <option value="Residu-1-NLM-h=1,8-W=25-lambda=0.000700">Residu-1-NLM Expe Patchs h=1.8 W=25 lambda=7e-4</option>
+		  <option value="Residu-1-NLM-h=1,8-W=25-lambda=0.001000">Residu-1-NLM Expe Patchs h=1.8 W=25 lambda=1e-3</option>
+		  <option value="Residu-1-NLM-h=1,8-W=25-lambda=0.002000">Residu-1-NLM Expe Patchs h=1.8 W=25 lambda=2e-3</option>
+		  <option value="Residu-1-NLM-h=1,8-W=25-lambda=0.005000">Residu-1-NLM Expe Patchs h=1.8 W=25 lambda=5e-3</option>
+		<optgroup label="Residu-1-NLM Expe Patchs h=1.5 W=25">
+		  <option value="Residu-1-NLM-h=1,5-W=25-lambda=0.000100">Residu-1-NLM Expe Patchs h=1.5 W=25 lambda=1e-4</option>
+		  <option value="Residu-1-NLM-h=1,5-W=25-lambda=0.000300">Residu-1-NLM Expe Patchs h=1.5 W=25 lambda=3e-4</option>
+		  <option value="Residu-1-NLM-h=1,5-W=25-lambda=0.000700">Residu-1-NLM Expe Patchs h=1.5 W=25 lambda=7e-4</option>
+		  <option value="Residu-1-NLM-h=1,5-W=25-lambda=0.001000">Residu-1-NLM Expe Patchs h=1.5 W=25 lambda=1e-3</option>
+		  <option value="Residu-1-NLM-h=1,5-W=25-lambda=0.002000">Residu-1-NLM Expe Patchs h=1.5 W=25 lambda=2e-3</option>
+		<optgroup label="Residu-1-NLM Expe Patchs h=2.1 W=25">
+		  <option value="Residu-1-NLM-h=2,1-W=25-lambda=0.000100">Residu-1-NLM Expe Patchs h=2.1 W=25 lambda=1e-4</option>
+		  <option value="Residu-1-NLM-h=2,1-W=25-lambda=0.000300">Residu-1-NLM Expe Patchs h=2.1 W=25 lambda=3e-4</option>
+		  <option value="Residu-1-NLM-h=2,1-W=25-lambda=0.000700">Residu-1-NLM Expe Patchs h=2.1 W=25 lambda=7e-4</option>
+		  <option value="Residu-1-NLM-h=2,1-W=25-lambda=0.001000">Residu-1-NLM Expe Patchs h=2.1 W=25 lambda=1e-3</option>
+		  <option value="Residu-1-NLM-h=2,1-W=25-lambda=0.002000">Residu-1-NLM Expe Patchs h=2.1 W=25 lambda=2e-3</option>
+		<optgroup label="Residu-1-NLM Expe Patchs h=2.1 W=25">
+		  <option value="Residu-1-NLM-h=2-W=31-lambda=0.000100">Residu-1-NLM Expe Patchs h=2 W=31 lambda=1e-4</option>
+		  <option value="Residu-1-NLM-h=2-W=31-lambda=0.000300">Residu-1-NLM Expe Patchs h=2 W=31 lambda=3e-4</option>
+		  <option value="Residu-1-NLM-h=2-W=31-lambda=0.000700">Residu-1-NLM Expe Patchs h=2 W=31 lambda=7e-4</option>
+		  <option value="Residu-1-NLM-h=2-W=31-lambda=0.001000">Residu-1-NLM Expe Patchs h=2 W=31 lambda=1e-3</option>
+		  <option value="Residu-1-NLM-h=2-W=31-lambda=0.002000">Residu-1-NLM Expe Patchs h=2 W=31 lambda=2e-3</option>
+
+		</select>
+		<br>
+		<br>
+
+		<figure>
+			<img id="ImDeb2" src="Images/2D/MAPTV_lambda=1.png"  />
+		</figure>
+	</aside>
+
+
+</section>
+
+We present the SNR results as a function of lambda for each method (we have different scales for lambda so I made different graphs) :
+<figure>
+	<img id="ImSNR1" src="Images/2D/resultsGlobal2D.png"  />
+	<img id="ImSNR2" src="Images/2D/resultsLocal2D.png"  />
+	<img id="ImSNR3" src="Images/2D/resultsFFT2D.png"  />
+	<img id="ImSNR4" src="Images/2D/resultsMAP2D.png"  />
+</figure>
+Comparing MAP-TV and Residu-1-TV on a tighter scale :
+<figure>
+	<img id="ImSNR5" src="Images/2D/resultsResidu-12Dtight.png"  />
+	<img id="ImSNR6" src="Images/2D/resultsMAP2Dtight.png"  />
+</figure>
+Experiment on the size of patches for Residu-TV. We display the SNR values for s = [3 6 12 24 48] (=[1 2 3 4 5]) and overlap=[100% 50% 0%]
+<figure>
+	<img id="ImSNR7" src="Images/2D/snr_sizepatch.png"  />
+</figure>
+Experiment on the size of patches for Residu-1-TV. We display the SNR values for s = [6 8 10 12 15 20 25 30] (=[1 2 3 4 5 6 7 8]) and overlap=[1/2 50% 0%]
+<figure>
+	<img id="ImSNR8" src="Images/2D/expepatchs-1-SNRbar.png"  />
+</figure>
+
+
+    
+</body>
+</html>
