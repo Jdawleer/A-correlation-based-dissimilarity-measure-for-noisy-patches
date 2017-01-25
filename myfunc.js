@@ -4,7 +4,7 @@ function updated(element)
     var val=element.options[idx].value;
     var content=element.options[idx].innerHTML;
 
-    document.getElementById("Im1").src= "Images/SPD/" + val + ".png"
+    document.getElementById("Im1").src= "Image/SPD/" + val + ".png"
  }
  
  function updated2(element)
@@ -15,13 +15,13 @@ function updated(element)
 
 
 
-    document.getElementById("Im-WDM-1").src= "Images/NLM/" + val + "-NLM-L22-s=5-W=21-final.png"
-    document.getElementById("Im-WDM-2").src= "Images/NLM/" + val + "-NLM-L22-s=5-W=21-error.png"
-    document.getElementById("Im-WDM-3").src= "Images/NLM/" + val + "-NLM-L22-s=5-W=21-residu.png"
+    document.getElementById("Im-WDM-1").src= "Image/NLM/" + val + "-NLM-L22-s=5-W=21-final.png"
+    document.getElementById("Im-WDM-2").src= "Image/NLM/" + val + "-NLM-L22-s=5-W=21-error.png"
+    document.getElementById("Im-WDM-3").src= "Image/NLM/" + val + "-NLM-L22-s=5-W=21-residu.png"
 
-    document.getElementById("Im-WDM-4").src= "Images/NLM/" + val + "-NLM-corr2-s=5-W=21-final.png"
-    document.getElementById("Im-WDM-5").src= "Images/NLM/" + val + "-NLM-corr2-s=5-W=21-error.png"
-    document.getElementById("Im-WDM-6").src= "Images/NLM/" + val + "-NLM-corr2-s=5-W=21-residu.png"
+    document.getElementById("Im-WDM-4").src= "Image/NLM/" + val + "-NLM-corr2-s=5-W=21-final.png"
+    document.getElementById("Im-WDM-5").src= "Image/NLM/" + val + "-NLM-corr2-s=5-W=21-error.png"
+    document.getElementById("Im-WDM-6").src= "Image/NLM/" + val + "-NLM-corr2-s=5-W=21-residu.png"
  }
 
  function updated3(element)
