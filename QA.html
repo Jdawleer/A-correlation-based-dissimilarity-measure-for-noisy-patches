@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
+<script class="jsbin" src="myfunc.js"></script>
+<meta charset=utf-8 />
+<link rel="stylesheet" href="style.css" />
+<title>A correlation-based dissimilarity measure for noisy patches</title>
+<!--[if IE]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<style>
+  article, aside, figure, footer, header, hgroup, 
+  menu, nav, section { display: block; }
+</style>
+</head>
+
+<script type="text/javascript"
+  src="http://www.maths.nottingham.ac.uk/personal/drw/LaTeXMathML.js">
+  </script>
+
+<header>
+<h1> A correlation-based dissimilarity measure for noisy patches </h1>
+Working in progress...
+</header>
+
+<nav>
+<div id="menu">
+  <ul id="onglets">
+    <li ><a href="index.html"> Main </a></li>
+    <li><a href="SPD.html"> Similar patch detection </a></li>
+    <li><a href="WDM-NLM.html"> WDM Non Local Means </a></li>
+    <li class="active"><a href="QA.html"> Quality Assessment </a></li>
+
+  </ul>
+</div>
+</nav>
+
+<body>
+
+<br>
+
+The SNR, and all its derivatives like the MSE or the PSNR, are the most commonly used metrics to evaluate and compare denoising performances. It is defined as :
+<blockquote>
+$SNR(u)= 10 \log_{10}(\frac{||u||^2}{||f-u||^2})$
+</blockquote>
+Fundamentally, this measures the magnitude of the error by computing the error energy $||f-u||^2$.
+<br>
+The classical autocorrelation estimator $r_{P}$ is defined on a noisy patch $P$ of size $s \times s$ for all possible lags $(l,m) \in \{-\frac{s}{2},..., \frac{s}{2} \}^2$ : 
+<blockquote> $r_{P}(l,m)= \sum_{(x,y)} P(x,y) P(x+l,y+m)$ </blockquote>
+We propose to estimate a normalized residual autocorrelation on every patch $R_k$ of the residual :
+<blockquote>
+$A(R_k) = \frac{||r_{R_k}||_2^2 - r_{R_k}(0,0)^2}{\sigma_k^4 s^2(s^2-1)}$
+</blockquote>
+where $\sigma_k^2 = \sum_{(i,j)} R_k(i,j)^2$ is the energy of the residual estimated on the patch $R_k$. The normalization corresponds to the expected value of the estimator in the numerator under the hypothesis that $R_k$ is a white Gaussian noise with zero mean and variance $\sigma_k^2$.
+Then, we can aggregate the $A(k)$ coefficients computed over each patch to obtain a quality map at each pixel $(i,j)$ :
+<blockquote>
+W-map$(i,j) = \frac{\sum_{k} \chi_k(i,j) A(R_k)}{\sum_{k} \chi_k(i,j)} $
+</blockquote>
+where $\chi_k(i,j)=1$ if and only if $(i,j)$ belongs to the support of $R_k$. This map gives a local estimate of how much structural content was removed from the image. A global score can be obtained with a simple normalized sum :
+<blockquote>
+W-score$= \frac{1}{N} \sum_{(i,j)} \text{W-map}(i,j) $
+</blockquote>
+with $N$ the total number of pixels. This total score gives an estimate of the quality of denoising. When it is very close to 1, the denoising algorithm did not damage the underlying image. When it increases, it means that the residual is structured and thus some content from the image was removed.
+<br>
+<br>
+
+The experiment is very simple and is only provided as a proof of concept. It consists in comparing the W-scores for images having the same SNR but different visual aspects. We compare 7 (non-optimal) denoised versions of the Barbara image corrupted by a Gaussian additive noise with $\sigma=25$. These images correspond to different denoising methods yielding relatively poor SNR (from 19.3dB to 19.7dB).
+<br>
+The Denoised results, the residual image and the W-map are shown from left to right.
+
+<br>
+SNR = 19.77 dB, W-score = 0.98, SSIM = 0.85
+<br>
+    <img id="Im1" src="Images/QA/denoised-1.png" width="28%" />
+    <img id="Im2" src="Images/QA/1-residu.png" width="33%" />
+    <img id="Im3" src="Images/QA/1-evaluation.png" width="33%" />
+<br>
+<br>
+<br>
+SNR = 19.52 dB, W-score = 1.89, SSIM = 0.81
+<br>
+    <img id="Im1" src="Images/QA/denoised-2.png" width="28%" />
+    <img id="Im2" src="Images/QA/2-residu.png" width="33%" />
+    <img id="Im3" src="Images/QA/2-evaluation.png" width="33%" />
+<br>
+<br>
+<br>
+SNR = 19.49 dB, W-score = 1.23, SSIM = 0.87
+<br>
+    <img id="Im1" src="Images/QA/denoised-3.png" width="28%" />
+    <img id="Im2" src="Images/QA/3-residu.png" width="33%" />
+    <img id="Im3" src="Images/QA/3-evaluation.png" width="33%" />
+<br>
+<br>
+<br>
+SNR = 19.31 dB, W-score = 2.42, SSIM = 0.82
+<br>
+    <img id="Im1" src="Images/QA/denoised-4.png" width="28%" />
+    <img id="Im2" src="Images/QA/4-residu.png" width="33%" />
+    <img id="Im3" src="Images/QA/4-evaluation.png" width="33%" />
+<br>
+<br>
+<br>
+SNR = 19.39 dB, W-score = 2.72, SSIM = 0.82
+<br>
+    <img id="Im1" src="Images/QA/denoised-5.png" width="28%" />
+    <img id="Im2" src="Images/QA/5-residu.png" width="33%" />
+    <img id="Im3" src="Images/QA/5-evaluation.png" width="33%" />
+<br>
+<br>
+<br>
+SNR = 19.50 dB, W-score = 1.00, SSIM = 0.88
+<br>
+    <img id="Im1" src="Images/QA/denoised-6.png" width="28%" />
+    <img id="Im2" src="Images/QA/6-residu.png" width="33%" />
+    <img id="Im3" src="Images/QA/6-evaluation.png" width="33%" />
+<br>
+<br>
+<br>
+SNR = 19.50 dB, W-score = 1.72, SSIM = 0.82
+<br>
+    <img id="Im1" src="Images/QA/denoised-7.png" width="28%" />
+    <img id="Im2" src="Images/QA/7-residu.png" width="33%" />
+    <img id="Im3" src="Images/QA/7-evaluation.png" width="33%" />
+
+</body>
+</html>

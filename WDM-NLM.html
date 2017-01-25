@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
+<script class="jsbin" src="myfunc.js"></script>
+<meta charset=utf-8 />
+<link rel="stylesheet" href="style.css" />
+<title>A correlation-based dissimilarity measure for noisy patches</title>
+<!--[if IE]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<style>
+  article, aside, figure, footer, header, hgroup, 
+  menu, nav, section { display: block; }
+</style>
+</head>
+
+<script type="text/javascript"
+  src="http://www.maths.nottingham.ac.uk/personal/drw/LaTeXMathML.js">
+  </script>
+
+<header>
+<h1> A correlation-based dissimilarity measure for noisy patches </h1>
+Working in progress...
+</header>
+
+<nav>
+<div id="menu">
+  <ul id="onglets">
+    <li ><a href="index.html"> Main </a></li>
+    <li><a href="SPD.html"> Similar patch detection </a></li>
+    <li class="active"><a href="WDM-NLM.html"> WDM Non Local Means </a></li>
+    <li><a href="QA.html"> Quality Assessment </a></li>
+
+  </ul>
+</div>
+</nav>
+
+<body>
+
+<br>
+$L^p$ are the classical distances for the noisy patches of size $s \times s$ :
+
+<blockquote> $d_p^p(P_{1},P_{2})=  ||P_{1}-P_{2}||_p^p$ </blockquote>
+
+
+Then, we define our dissimilarity measure WDM. The classical autocorrelation estimator $r_{P}$ is defined on a noisy patch $P$ of size $s \times s$ for all possible lags $(l,m) \in \{-\frac{s}{2},..., \frac{s}{2} \}^2$ : 
+
+<blockquote> $r_{P}(l,m)= \sum_{(x,y)} P(x,y) P(x+l,y+m)$ </blockquote>
+
+The WDM criteria consists in :
+
+<blockquote> $d_w^2(P_{1},P_{2})=  ||r_{P_{1}-P_{2}}||_2^2$ </blockquote>
+
+
+The new similarity criterion defined previously can be applied to any patch based algorithm. However, for evaluation purposes we will focus on the original NLM algorithm. To limit the number of parameters, we fix a search window of size $W=21$. To compare the results on a fair basis the bandwidth parameter $h$ is optimized in each case to obtain the best SNR. The SNR and SSIM results for different images using different patch sizes are shown on the following table. We can see that changing the distance from $L^2$ to WDM always improves the SNR by around 0.5 dB, sometimes more. The SSIM is also consistently improved.
+<br>
+
+<img id="Im-SNR" src="Images/NLM/TableSNR.png" width="400" />
+
+<br>
+SNR (in dB) and SSIM performances of the NLM algorithm for $L^2$ and WDM patch distances with $\sigma=25$
+<br>
+<br>
+
+Change the image :
+    <select onchange="updated2(this)">
+      <option selected="selected" value="lena">Lena</option>
+      <option value="barb">Barbara</option>
+      <option value="buil">Building</option>
+      <option value="mand">Mandrill</option>
+      <option value="hous">House</option>
+      <option value="fing">Fingerprint</option>
+      <option value="flin">Flinstones</option>
+      <option value="boat">Boat</option>
+    </select>
+<br>
+<br>
+    Denoised, Error and Residual with $L^2$
+<br>
+<br>
+    <img id="Im-WDM-1" src="Images/NLM/lena-NLM-L22-s=5-W=21-final.png" width="29%" />
+    <img id="Im-WDM-2" src="Images/NLM/lena-NLM-L22-s=5-W=21-error.png" width="30%" />
+    <img id="Im-WDM-3" src="Images/NLM/lena-NLM-L22-s=5-W=21-residu.png" width="33%" />
+<br>
+<br>
+    Denoised, Error and Residual with WDM
+<br>
+<br>
+    <img id="Im-WDM-4" src="Images/NLM/lena-NLM-corr2-s=5-W=21-final.png" width="29%" />
+    <img id="Im-WDM-5" src="Images/NLM/lena-NLM-corr2-s=5-W=21-error.png" width="30%" />
+    <img id="Im-WDM-6" src="Images/NLM/lena-NLM-corr2-s=5-W=21-residu.png" width="33%" />
+    
+</body>
+</html>
